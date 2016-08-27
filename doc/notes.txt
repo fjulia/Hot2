@@ -1,0 +1,18 @@
+NOTES DESENVOLUPAMENT HOTSTAGE AMB OPENCV + QT
+
+Passos (Cada Imatge): 
+
+1 - Passar-la a blanc i negre, treure el soroll i rotar. Els valots obtinguts aquí serviràn per per tot el procés
+2 -
+
+
+
+MANUAL PROGRAMA
+
+- Nova Mostra -> Esborrar totes les dades de configuració i demana on es troba el directori amb totes les imatges.
+- Visual conf -> Ajustar els paràmetres de configuració visualment.
+				S'ajusten els parametres:
+						-
+						-
+						-
+- Start Processing -> inicia el procés.
