@@ -1,8 +1,9 @@
 #ifndef FINDCONTOUR_H
 #define FINDCONTOUR_H
 
-#include "opencv2/highgui/highgui.hpp"
-#include "opencv2/imgproc/imgproc.hpp"
+#include <opencv2/core.hpp>
+#include <opencv2/imgcodecs.hpp>
+#include <opencv2/highgui.hpp>
 #include <iostream>
 #include <stdio.h>
 #include <stdlib.h>
@@ -18,8 +19,11 @@ using namespace std;
 
 
 
-int findContour( char* filePath);
+int findContour( string filePath);
 void thresh_callback(int, void* );
+void config_callback(int, void* );
+void callbackButton(int, void*);
 Mat rotate(Mat src, double angle);
+void calcNotablePoints();
 
 #endif // FINDCONTOUR_H

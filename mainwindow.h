@@ -24,6 +24,10 @@ private slots:
 
     void on_actionOpen_File_triggered();
 
+    void on_shrinkage_limit_2_textChanged(const QString &arg1);
+
+    void on_shrinkage_limit_textChanged(const QString &arg1);
+
 private:
     Ui::MainWindow *ui;
 };

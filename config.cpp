@@ -7,27 +7,29 @@ Config m_config;
 
 Config::Config()
 {
-    //Default Canny thresh
-    thresh = 150;
+    shrinkage = 95;
+    shrinkage = 85;
 }
 
-void Config::setThresh(int t){
-    thresh = t;
-}
 
-void Config::setRotation(int r){
-    rotation = r;
-}
-
-void Config::setHLine(int h){
-    hLine = h;
-}
-
-void Config::setDataPath(char* d){
+void Config::setDataPath(string d){
     dataPath = d;
+    noise_up = -1;
+    noise_down = -1;
+    noise_left = -1;
+    noise_right = -1;
+    rotation = -1;
 }
 
-int Config::getThresh(){return thresh;}
-int Config::getRotation(){return rotation;}
-int Config::getHLine(){return hLine;}
-char* Config::getDataPath(){return dataPath;}
+string Config::getDataPath(){return dataPath;}
+
+void Config::setShrinkage(int sh){
+     shrinkage = sh;
+};
+
+int Config::getShrinkage(){return shrinkage;}
+
+void Config::setShrinkage2(int sh){
+    shrinkage2 = sh;
+}
+int Config::getShrinkage2(){return shrinkage2;}

@@ -26,7 +26,7 @@ struct pointSorter {
 /*
  * Calculate horizon level and rotation from black image
 */
-horizon calcHorizon(Mat src, int left, int right)
+horizon calcHorizon(Mat src, int left, int right, int up, int down)
 {
     horizon hr;
     hr.high=0;
@@ -60,8 +60,8 @@ horizon calcHorizon(Mat src, int left, int right)
     fitLine(dst,ln,CV_DIST_L2,0,0.01,0.01);
 
     //Print histogram
-    /*Mat drawing = Mat::zeros( src.size(), CV_8UC3 );
-    for(int i = 1; i < dst.size(); i++){
+    Mat drawing = Mat::zeros( src.size(), CV_8UC3 );
+    for(uint i = 1; i < dst.size(); i++){
         line(drawing, dst.at(i) , dst.at(i), Scalar(0, 0, 255), 2, 8, 0  );
     }
 
@@ -69,44 +69,52 @@ horizon calcHorizon(Mat src, int left, int right)
         {
           line(drawing, Point( i,  hist[i]) , Point( i-1, hist[i-1] ), Scalar( 255, 0, 0), 2, 8, 0  );
         }
-*/
 
-    float angle = angleBetween(ln[2]+ln[0],ln[3]+ln[1],ln[2]+ln[0],ln[3],ln[2],ln[3]);
-    hr.rotation = angle *(180/PI);
-    hr.high = getHoriz(src.cols/2,ln[2],ln[2]+ln[0],ln[3]+ln[1],ln[3]);
-    notables n = getNotablePoints(hist,src.cols,maxB,hr.high);
+
+    //float angle = angleBetween(ln[2]+ln[0],ln[3]+ln[1],ln[2]+ln[0],ln[3],ln[2],ln[3]);
+    //hr.rotation = angle *(180/PI);
+    //hr.high = getHoriz(src.cols/2,ln[2],ln[2]+ln[0],ln[3]+ln[1],ln[3]);
+    /*notables n = getNotablePoints(hist,src.cols,maxB,ln[1], ln[3], up-down, left, right);
     hr.a = n.a;
     hr.b = n.b;
     hr.c = n.c;
     hr.d = n.d;
-/*    line( drawing, Point(ln[2],ln[3]), Point(ln[2]+ln[0]*600,ln[3]+ln[1]*600),Scalar( 0, 255, 0),1,8,0);
+    hr.hist = hist;
+    line( drawing, hr.c, hr.a,Scalar( 255, 0, 0),1,8,0);
+    line( drawing, hr.d, hr.b,Scalar( 255, 0, 0),1,8,0);
+
+    line( drawing, Point(ln[2]-ln[0]*ln[2],ln[3+ln[1]*ln[2]]), Point(ln[2]+ln[0]*600,ln[3]+ln[1]*600),Scalar( 0, 255, 0),1,8,0);*/
     namedWindow( "Result", 1 );
     imshow( "Result", drawing );
-*/  return hr;
+  return hr;
 
 }
 
-notables getNotablePoints(int *hist,int size, int *maxB, int horiz)
+notables getNotablePoints(int size, int *maxB, float horizA, float horizB, int noiseGap)
 {
     notables res;
-    bool left = false;
-    int hRef = horiz - horiz*HORIZON_GAP;
-    cout << "href "<< hRef << endl;
-    for(int i = 0; i < size; i++){
-        if(!left){
-            if(maxB[i]<hRef){
-                res.a = Point(i,maxB[i]);
+    //int hRef = horiz - horiz*HORIZON_GAP;
+    bool lf = false;
+    int maxGlobal = size;
+    for(int i = 0; i <size; i++){
+        int horiz = i*horizA + horizB;
+        int noise = horiz -(abs(noiseGap)/2);
+        if(maxB[i]<maxGlobal && maxB[i]< noise) maxGlobal = maxB[i];
+        if(!lf){
+            //left side
+            if(maxB[i]< noise){
                 res.c = Point(i,horiz);
-                left = true;
+                lf = true;
             }
         }else{
-            if(maxB[i] > hRef){
-                res.b = Point(i,maxB[i-1]);
+            if(maxB[i]> noise){
                 res.d = Point(i-1,horiz);
                 break;
             }
         }
     }
+    res.a = Point(res.c.x,maxGlobal);
+    res.b = Point(res.d.x,maxGlobal);
     return res;
 }
 
@@ -177,9 +185,9 @@ Mat rotate(Mat src, double angle)
 map<int,int> getColumns(vector<vector<Point>> contours)
 {
     map<int,int> res;
-    for( int i = 0; i< contours.size(); i++ )
+    for( uint i = 0; i< contours.size(); i++ )
     {
-        for (int j = 0; j < contours[i].size(); j++) {
+        for (uint j = 0; j < contours[i].size(); j++) {
             if (res.find(contours[i][j].x) != res.end()){
                 //add
                 res[contours[i][j].x] = res[contours[i][j].x]+1;

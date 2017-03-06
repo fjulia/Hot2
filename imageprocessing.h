@@ -13,8 +13,15 @@
 using namespace cv;
 using namespace std;
 
-int startProcessing( char* filePath);
-vector<string>  getAllFiles(char* folderPath);
+int startProcessing( string filePath);
+
+int processImage(string folderPath,string filePath, int fId);
+
+Mat find_morph_size(Mat* dst,int m_size);
+
+int reduceHorizon(Mat *src);
+double findBouding(Mat *src);
+vector<string>  getAllFiles(string folderPath);
 
 
 #endif // IMAGEPROCESSING_H

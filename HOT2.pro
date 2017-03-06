@@ -10,20 +10,23 @@ greaterThan(QT_MAJOR_VERSION, 4): QT += widgets
 
 TARGET = HOT2
 TEMPLATE = app
-
+#INCLUDEPATH += /usr/local/include
+#LIBS += -L/usr/local/lib -lopencv_core -lopencv_imgcodecs -lopencv_highgui
 
 SOURCES += main.cpp\
         mainwindow.cpp \
     findcontour.cpp \
     imageprocessing.cpp \
     config.cpp \
-    imageutils.cpp
+    imageutils.cpp \
+    utils.cpp
 
 HEADERS  += mainwindow.h \
     findcontour.h \
     imageprocessing.h \
     config.h \
-    imageutils.h
+    imageutils.h \
+    utils.h
 
 CONFIG += link_pkgconfig
 PKGCONFIG += opencv

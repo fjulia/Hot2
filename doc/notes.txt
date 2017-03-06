@@ -3,7 +3,32 @@ NOTES DESENVOLUPAMENT HOTSTAGE AMB OPENCV + QT
 Passos (Cada Imatge): 
 
 1 - Passar-la a blanc i negre, treure el soroll i rotar. Els valots obtinguts aquí serviràn per per tot el procés
-2 -
+2 - Dades a extrure:
+	- centre
+	- columna esquerra V0
+	- columna dreta V1
+	- cantonada dalt esquerra A
+	- cantonada dalt dreta B
+	- cantonada baix esquerra D 
+	- cantonada baix dreta C
+	- Punt central entre C i D -> X
+	- la X més alta
+	- maxima amplada 
+	- màxima alçada
+
+- Subcalculs
+	- Area
+	- Axis aligned bounding box
+	- Llargada dels segments entre els punts A,B,C,D
+
+Punts:
+
+	- Fisrt Shrinkage -> dismunució area fins a threshold (95%)
+	- Max shrinkage -> disminució area fins 85%
+	- Softening
+	- Ball
+		
+	
 
 
 
